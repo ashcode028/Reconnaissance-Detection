@@ -1,2 +1,2 @@
-/root/temp/simple_netfilter_LKM.o
+/root/netfilter_lkm/simple_netfilter_LKM.o
 

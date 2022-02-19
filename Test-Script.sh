@@ -1,7 +1,6 @@
 #!/bin/bash
 
-do
-	echo "ACK SCAN"
+    echo "ACK SCAN"
     nmap -sA 172.16.12.131 &
     echo "XMAS SCAN"
     nmap -sX 172.16.12.131 &
@@ -11,7 +10,6 @@ do
     nmap -sS 172.16.12.131 &
     echo "NULL SCAN"
     nmap -sN 172.16.12.131 &
-done
 
 wait 
 echo "All scans done"
