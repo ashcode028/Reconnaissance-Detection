@@ -1,1 +1,0 @@
-cmd_/root/temp/simple_netfilter_LKM.ko := ld -r -m elf_x86_64 --build-id=sha1  -T scripts/module.lds -o /root/temp/simple_netfilter_LKM.ko /root/temp/simple_netfilter_LKM.o /root/temp/simple_netfilter_LKM.mod.o;  true
