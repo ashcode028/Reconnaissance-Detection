@@ -19,6 +19,7 @@ static unsigned int hfunc(void *priv, struct sk_buff *skb, const struct nf_hook_
         return NF_ACCEPT;
 
     iph = ip_hdr(skb);
+    u32 src_ipa;
     src_ipa = ntohl(iph->saddr);
     if (iph->protocol == IPPROTO_TCP) {
         // printk(KERN_INFO "TCP packet detected!\n");
