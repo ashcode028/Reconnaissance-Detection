@@ -36,39 +36,24 @@ static unsigned int hfunc(void *priv, struct sk_buff *skb, const struct nf_hook_
                 /**
                  * NULL Scan
                  */
-                else if (tcp_header->syn == 0
-                    && tcp_header->ack == 0
-                    && tcp_header->urg == 0
-                    && tcp_header->rst == 0
-                    && tcp_header->fin == 0
-                    && tcp_header->psh == 0) {
+                else if (!(tcp_header->syn && tcp_header->urg && tcp_header->ack && tcp_header->psh && tcp_header->rst && tcp_header->fin)) {
                         printk(KERN_INFO "NULL Scan detected from %pI4h \n" ,&src_ipa);
                 }
 
                 /**
                  * ACK Scan
                  */
-                else if (tcp_header->syn == 0
-                         && tcp_header->ack == 1
-                         && tcp_header->urg == 0
-                         && tcp_header->rst == 0
-                         && tcp_header->fin == 0
-                         && tcp_header->psh == 0) {
+                else if (tcp_header->ack && 
+		   !(tcp_header->urg || tcp_header->syn || tcp_header->psh || tcp_header->rst || tcp_header->fin)) {
 
                         printk(KERN_INFO "ACK Scan detected from %pI4h \n" ,&src_ipa);
                 }
 
-
-
                 /**
                  * FIN Scan
                  */
-                else if (tcp_header->syn == 0
-                         && tcp_header->ack == 0
-                         && tcp_header->urg == 0
-                         && tcp_header->rst == 0
-                         && tcp_header->fin == 1
-                         && tcp_header->psh == 0) {
+                else if (tcp_header->fin && 
+		   !(tcp_header->urg || tcp_header->ack || tcp_header->psh || tcp_header->rst || tcp_header->syn)) {
 
                         printk(KERN_INFO "FIN Scan detected from %pI4h \n" ,&src_ipa);
                 }
@@ -77,12 +62,8 @@ static unsigned int hfunc(void *priv, struct sk_buff *skb, const struct nf_hook_
                 /**
                  * XMAS Scan
                  */
-                else if (tcp_header->syn == 0
-                         && tcp_header->ack == 0
-                         && tcp_header->urg == 1
-                         && tcp_header->rst == 0
-                         && tcp_header->fin == 1
-                         && tcp_header->psh == 1) {
+                else if (tcp_header->fin &&  tcp_header->urg && tcp_header->psh && 
+			 !(tcp_header->syn || tcp_header->rst || tcp_header->ack)) {
 
                         printk(KERN_INFO "XMAS Scan detected from %pI4h \n" ,&src_ipa);
                 }
