@@ -19,7 +19,7 @@ static unsigned int hfunc(void *priv, struct sk_buff *skb, const struct nf_hook_
         return NF_ACCEPT;
 
     iph = ip_hdr(skb);
-    src_addr = ntohl(iph->saddr);
+    src_ipa = ntohl(iph->saddr);
     if (iph->protocol == IPPROTO_TCP) {
         // printk(KERN_INFO "TCP packet detected!\n");
 
@@ -29,7 +29,7 @@ static unsigned int hfunc(void *priv, struct sk_buff *skb, const struct nf_hook_
                  */
 		if(tcp_header->syn && 
 		   !(tcp_header->urg || tcp_header->ack || tcp_header->psh || tcp_header->rst || tcp_header->fin)){
-			printk(KERN_INFO "SYN Scan detected from %pI4h \n" ,&src_addr);
+			printk(KERN_INFO "SYN Scan detected from %pI4h \n" ,&src_ipa);
 		}
 	    
                 /**
@@ -41,7 +41,7 @@ static unsigned int hfunc(void *priv, struct sk_buff *skb, const struct nf_hook_
                     && tcp_header->rst == 0
                     && tcp_header->fin == 0
                     && tcp_header->psh == 0) {
-                        printk(KERN_INFO "NULL Scan detected from %pI4h \n" ,&src_addr);
+                        printk(KERN_INFO "NULL Scan detected from %pI4h \n" ,&src_ipa);
                 }
 
                 /**
@@ -54,7 +54,7 @@ static unsigned int hfunc(void *priv, struct sk_buff *skb, const struct nf_hook_
                          && tcp_header->fin == 0
                          && tcp_header->psh == 0) {
 
-                        printk(KERN_INFO "ACK Scan detected from %pI4h \n" ,&src_addr);
+                        printk(KERN_INFO "ACK Scan detected from %pI4h \n" ,&src_ipa);
                 }
 
 
@@ -69,7 +69,7 @@ static unsigned int hfunc(void *priv, struct sk_buff *skb, const struct nf_hook_
                          && tcp_header->fin == 1
                          && tcp_header->psh == 0) {
 
-                        printk(KERN_INFO "FIN Scan detected from %pI4h \n" ,&src_addr);
+                        printk(KERN_INFO "FIN Scan detected from %pI4h \n" ,&src_ipa);
                 }
 
 
@@ -83,7 +83,7 @@ static unsigned int hfunc(void *priv, struct sk_buff *skb, const struct nf_hook_
                          && tcp_header->fin == 1
                          && tcp_header->psh == 1) {
 
-                        printk(KERN_INFO "XMAS Scan detected from %pI4h \n" ,&src_addr);
+                        printk(KERN_INFO "XMAS Scan detected from %pI4h \n" ,&src_ipa);
                 }
     }else if (iph->protocol == IPPROTO_UDP) {
         printk(KERN_INFO "UDP packet detected!\n");
