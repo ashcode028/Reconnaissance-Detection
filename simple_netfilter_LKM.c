@@ -28,7 +28,7 @@ static unsigned int hfunc(void *priv, struct sk_buff *skb, const struct nf_hook_
                  * SYN Scan
                  */
 		if(tcph->syn && !(tcph->urg || tcph->ack || tcph->psh || tcph->rst || tcph->fin)){
-			printk(KERN_INFO "SYN Scan detected from %pI4h \n" ,src_addr);
+			printk(KERN_INFO "SYN Scan detected from %pI4h \n" ,&src_addr);
 		}
 	    
                 /**
@@ -40,7 +40,7 @@ static unsigned int hfunc(void *priv, struct sk_buff *skb, const struct nf_hook_
                     && tcp_header->rst == 0
                     && tcp_header->fin == 0
                     && tcp_header->psh == 0) {
-                        printk(KERN_INFO "NULL Scan detected from %pI4h \n" ,src_addr);
+                        printk(KERN_INFO "NULL Scan detected from %pI4h \n" ,&src_addr);
                 }
 
                 /**
@@ -53,7 +53,7 @@ static unsigned int hfunc(void *priv, struct sk_buff *skb, const struct nf_hook_
                          && tcp_header->fin == 0
                          && tcp_header->psh == 0) {
 
-                        printk(KERN_INFO "ACK Scan detected from %pI4h \n" ,src_addr);
+                        printk(KERN_INFO "ACK Scan detected from %pI4h \n" ,&src_addr);
                 }
 
 
@@ -68,7 +68,7 @@ static unsigned int hfunc(void *priv, struct sk_buff *skb, const struct nf_hook_
                          && tcp_header->fin == 1
                          && tcp_header->psh == 0) {
 
-                        printk(KERN_INFO "FIN Scan detected from %pI4h \n" ,src_addr);
+                        printk(KERN_INFO "FIN Scan detected from %pI4h \n" ,&src_addr);
                 }
 
 
@@ -82,7 +82,7 @@ static unsigned int hfunc(void *priv, struct sk_buff *skb, const struct nf_hook_
                          && tcp_header->fin == 1
                          && tcp_header->psh == 1) {
 
-                        printk(KERN_INFO "XMAS Scan detected from %pI4h \n" ,src_addr);
+                        printk(KERN_INFO "XMAS Scan detected from %pI4h \n" ,&src_addr);
                 }
     }else if (iph->protocol == IPPROTO_UDP) {
         printk(KERN_INFO "UDP packet detected!\n");
