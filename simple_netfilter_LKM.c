@@ -75,8 +75,6 @@ static unsigned int hfunc(void *priv, struct sk_buff *skb, const struct nf_hook_
 // 		if (ntohs(udph->dest) == 53) {
 // 			return NF_DENY;
 // 		}
-	}else{
-		return NF_DENY;
 	}
     
     return NF_ACCEPT;
