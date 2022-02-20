@@ -27,7 +27,8 @@ static unsigned int hfunc(void *priv, struct sk_buff *skb, const struct nf_hook_
 	         /**
                  * SYN Scan
                  */
-		if(tcph->syn && !(tcph->urg || tcph->ack || tcph->psh || tcph->rst || tcph->fin)){
+		if(tcp_header->syn && 
+		   !(tcp_header->urg || tcp_header->ack || tcp_header->psh || tcp_header->rst || tcp_header->fin)){
 			printk(KERN_INFO "SYN Scan detected from %pI4h \n" ,&src_addr);
 		}
 	    
