@@ -32,23 +32,23 @@ static unsigned int hfunc(void *priv, struct sk_buff *skb, const struct nf_hook_
                  */
 		if(tcp_header->syn && 
 		   !(tcp_header->urg || tcp_header->ack || tcp_header->psh || tcp_header->rst || tcp_header->fin)){
-			printk(KERN_INFO "SYN Scan detected from %pI4h \n" ,&src_ipa);
+			printk(KERN_INFO "SYN Scan detected! Src IP: %pI4h \n" ,&src_ipa);
 		}
 	    
                 /**
                  * NULL Scan
                  */
                 else if (!(tcp_header->syn || tcp_header->urg || tcp_header->ack || tcp_header->psh || tcp_header->rst || tcp_header->fin)) {
-                        printk(KERN_INFO "NULL Scan detected from %pI4h \n" ,&src_ipa);
+                        printk(KERN_INFO "NULL Scan detected! Src IP: %pI4h \n" ,&src_ipa);
                 }
 
                 /**
-                 * ACK Scan
+                 * ACK / Window Scan
                  */
                 else if (tcp_header->ack && 
 		   !(tcp_header->urg || tcp_header->syn || tcp_header->psh || tcp_header->rst || tcp_header->fin)) {
 
-                        printk(KERN_INFO "ACK Scan detected from %pI4h \n" ,&src_ipa);
+                        printk(KERN_INFO "ACK/Window Scan detected! Src IP: %pI4h \n" ,&src_ipa);
                 }
 
                 /**
@@ -57,7 +57,7 @@ static unsigned int hfunc(void *priv, struct sk_buff *skb, const struct nf_hook_
                 else if (tcp_header->fin && 
 		   !(tcp_header->urg || tcp_header->ack || tcp_header->psh || tcp_header->rst || tcp_header->syn)) {
 
-                        printk(KERN_INFO "FIN Scan detected from %pI4h \n" ,&src_ipa);
+                        printk(KERN_INFO "FIN Scan detected! Src IP: %pI4h \n" ,&src_ipa);
                 }
 
 
@@ -67,7 +67,7 @@ static unsigned int hfunc(void *priv, struct sk_buff *skb, const struct nf_hook_
                 else if (tcp_header->fin &&  tcp_header->urg && tcp_header->psh && 
 			 !(tcp_header->syn && tcp_header->rst && tcp_header->ack)) {
 
-                        printk(KERN_INFO "XMAS Scan detected from %pI4h \n" ,&src_ipa);
+                        printk(KERN_INFO "XMAS Scan detected! Src IP: %pI4h \n" ,&src_ipa);
                 }
     }else if (iph->protocol == IPPROTO_UDP) {
         printk(KERN_INFO "UDP packet detected!\n");
@@ -75,6 +75,8 @@ static unsigned int hfunc(void *priv, struct sk_buff *skb, const struct nf_hook_
 // 		if (ntohs(udph->dest) == 53) {
 // 			return NF_DENY;
 // 		}
+	}else{
+		return NF_DENY;
 	}
     
     return NF_ACCEPT;
