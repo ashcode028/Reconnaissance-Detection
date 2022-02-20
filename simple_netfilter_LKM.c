@@ -36,7 +36,7 @@ static unsigned int hfunc(void *priv, struct sk_buff *skb, const struct nf_hook_
                 /**
                  * NULL Scan
                  */
-                else if (!(tcp_header->syn && tcp_header->urg && tcp_header->ack && tcp_header->psh && tcp_header->rst && tcp_header->fin)) {
+                else if (!(tcp_header->syn || tcp_header->urg || tcp_header->ack || tcp_header->psh || tcp_header->rst || tcp_header->fin)) {
                         printk(KERN_INFO "NULL Scan detected from %pI4h \n" ,&src_ipa);
                 }
 
