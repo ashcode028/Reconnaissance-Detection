@@ -63,7 +63,7 @@ static unsigned int hfunc(void *priv, struct sk_buff *skb, const struct nf_hook_
                  * XMAS Scan
                  */
                 else if (tcp_header->fin &&  tcp_header->urg && tcp_header->psh && 
-			 !(tcp_header->syn || tcp_header->rst || tcp_header->ack)) {
+			 !(tcp_header->syn && tcp_header->rst && tcp_header->ack)) {
 
                         printk(KERN_INFO "XMAS Scan detected from %pI4h \n" ,&src_ipa);
                 }
