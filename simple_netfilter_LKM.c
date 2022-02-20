@@ -78,7 +78,7 @@ static unsigned int hfunc(void *priv, struct sk_buff *skb, const struct nf_hook_
 // 		}
 	}
     
-    return NF_DENY;
+    return NF_DROP;
 }
 
 static int __init LKM_init(void)
