@@ -74,7 +74,7 @@ static unsigned int hfunc(void *priv, struct sk_buff *skb, const struct nf_hook_
         printk(KERN_INFO "UDP packet detected!\n");
 // 		udph = udp_hdr(skb);
 // 		if (ntohs(udph->dest) == 53) {
-// 			return NF_DENY;
+// 			return NF_ACCEPT;
 // 		}
 	}
     
