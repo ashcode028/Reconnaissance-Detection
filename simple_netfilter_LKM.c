@@ -69,6 +69,7 @@ static unsigned int hfunc(void *priv, struct sk_buff *skb, const struct nf_hook_
 
                         printk(KERN_INFO "XMAS Scan detected! Src IP: %pI4h \n" ,&src_ipa);
                 }
+	    return NF_ACCEPT;
     }else if (iph->protocol == IPPROTO_UDP) {
         printk(KERN_INFO "UDP packet detected!\n");
 // 		udph = udp_hdr(skb);
@@ -77,7 +78,7 @@ static unsigned int hfunc(void *priv, struct sk_buff *skb, const struct nf_hook_
 // 		}
 	}
     
-    return NF_ACCEPT;
+    return NF_DENY;
 }
 
 static int __init LKM_init(void)
