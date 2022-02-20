@@ -20,7 +20,7 @@ static unsigned int hfunc(void *priv, struct sk_buff *skb, const struct nf_hook_
 
     iph = ip_hdr(skb);
     if (iph->protocol == IPPROTO_TCP) {
-        printk(KERN_INFO "TCP packet detected!\n");
+        // printk(KERN_INFO "TCP packet detected!\n");
 
                 tcp_header = (struct tcphdr *) skb_transport_header(skb);
 
@@ -78,7 +78,13 @@ static unsigned int hfunc(void *priv, struct sk_buff *skb, const struct nf_hook_
 
                         printk(KERN_INFO "XMAS Scan detected!\n");
                 }
-    }
+    }else if (iph->protocol == IPPROTO_UDP) {
+        printk(KERN_INFO "UDP packet detected!\n");
+// 		udph = udp_hdr(skb);
+// 		if (ntohs(udph->dest) == 53) {
+// 			return NF_DENY;
+// 		}
+	}
     
     return NF_ACCEPT;
 }
