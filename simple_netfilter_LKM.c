@@ -17,7 +17,7 @@ static unsigned int hfunc(void *priv, struct sk_buff *skb, const struct nf_hook_
 {
     struct iphdr *iph;
     struct tcphdr *tcp_header;
-    struct udphdr *ucph;
+    struct udphdr *udph;
     if (!skb)
         return NF_ACCEPT;
 
