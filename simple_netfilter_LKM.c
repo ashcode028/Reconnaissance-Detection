@@ -17,18 +17,21 @@ static unsigned int hfunc(void *priv, struct sk_buff *skb, const struct nf_hook_
 {
     struct iphdr *iph;
     struct tcphdr *tcp_header;
+    struct udphdr *ucph;
     if (!skb)
         return NF_ACCEPT;
 
     iph = ip_hdr(skb);
+	
     u32 src_ipa;
     src_ipa = ntohl(iph->saddr);
+
     if (iph->protocol == IPPROTO_TCP) {
         // printk(KERN_INFO "TCP packet detected!\n");
 
                 tcp_header = (struct tcphdr *) skb_transport_header(skb);
 	         /**
-                 * SYN Scan
+                 * SYN Scan Detected, drop packets
                  */
 		if(tcp_header->syn && 
 		   !(tcp_header->urg || tcp_header->ack || tcp_header->psh || tcp_header->rst || tcp_header->fin)){
@@ -38,14 +41,14 @@ static unsigned int hfunc(void *priv, struct sk_buff *skb, const struct nf_hook_
 		}
 	    
                 /**
-                 * NULL Scan
+                 * NULL Scan Detected, drop packets
                  */
                 else if (!(tcp_header->syn || tcp_header->urg || tcp_header->ack || tcp_header->psh || tcp_header->rst || tcp_header->fin)) {
                         printk(KERN_INFO "NULL Scan detected! Src IP: %pI4h \n" ,&src_ipa);
                 }
 
                 /**
-                 * ACK / Window Scan
+                 * ACK / Window Scan Detected, drop packets
                  */
                 else if (tcp_header->ack && 
 		   !(tcp_header->urg || tcp_header->syn || tcp_header->psh || tcp_header->rst || tcp_header->fin)) {
@@ -55,7 +58,7 @@ static unsigned int hfunc(void *priv, struct sk_buff *skb, const struct nf_hook_
                 }
 
                 /**
-                 * FIN Scan
+                 * FIN Scan Detected, drop packets
                  */
                 else if (tcp_header->fin && 
 		   !(tcp_header->urg || tcp_header->ack || tcp_header->psh || tcp_header->rst || tcp_header->syn)) {
@@ -65,7 +68,7 @@ static unsigned int hfunc(void *priv, struct sk_buff *skb, const struct nf_hook_
                 }
 
                 /**
-                 * XMAS Scan
+                 * XMAS Scan Detected , drop packets
                  */
                 else if (tcp_header->fin &&  tcp_header->urg && tcp_header->psh && 
 			 !(tcp_header->syn && tcp_header->rst && tcp_header->ack)) {
@@ -73,15 +76,24 @@ static unsigned int hfunc(void *priv, struct sk_buff *skb, const struct nf_hook_
 			printk(KERN_INFO "XMAS Scan detected! Src IP: %pI4h \n" ,&src_ipa);
 			return NF_DROP;
                 }
+	      /**
+                 * If the packet is not of the above types, then accept
+              */
 	    return NF_ACCEPT;
     }else if (iph->protocol == IPPROTO_UDP) {
         printk(KERN_INFO "UDP packet detected!\n");
+	    
+                /**
+                 * If the packet is destined to 53 port then only accept
+                 */
 		udph = udp_hdr(skb);
 		if (ntohs(udph->dest) == 53) {
 			return NF_ACCEPT;
 		}
 	}
-    
+        /**
+         * Rest all type of connections are dropped
+        */
     return NF_DROP;
 }
 
