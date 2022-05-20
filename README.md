@@ -1,8 +1,20 @@
 # Linux Kernel Netfilter Module
 
-Class: CSE544
-Name:: Ashita
-Type: Assignment 1
+A loadable kernel firewall module that can detect specific packets and drop them. 
+More specifically, using netfilter framework hook functions
+(kernel call back functions) that user modules could access and obtain the detail of
+packets.
+
+## Testing
+On VM1, use the network reconnaissance tool nmap that sends crafted
+reconnaissance packets to the VM2 (e.g. TCP half-open scan packets, TCP connect
+packets, UDP packets etc.). So, install nmap in VM1
+
+On VM2, load the kernel module that use the Netfilter hook
+functions to obtain packets and identify the three reconnaissance scans E.g. the TCP half open
+scan sends only a single TCP SYN packet, expecting a SYN/ACK, RST or at worst no
+response. Once identified logs these detections into syslog.
+In this vm , clone this repo and run make.
 
 <aside>
 💡 The module is being loaded in artix system with runit as init system.All steps would be similar except installing headers and updation
